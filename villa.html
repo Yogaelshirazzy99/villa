@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Villa Puncak, Bandung &amp; Anyer – Pesan Langsung</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4EFE6;--ink:#12302E;--mut:#5B6F6C;--sea:#1B7F79;--sun:#F2B33D;--card:#FFFDF8;--ln:#DDD3C0;--bad:#C0392B}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Manrope,system-ui,sans-serif}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;margin:0}
+header{background:var(--ink);color:#fff;position:sticky;top:0;z-index:5}
+nav{max-width:1000px;margin:auto;display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:10px 16px}
+nav b{font:800 20px Fraunces,serif;margin-right:auto;cursor:pointer}
+nav a{color:#cfe3e0;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600}
+nav a:hover{background:#1f4744;color:#fff}
+main{max-width:1000px;margin:auto;padding:24px 16px 60px}
+.hero{padding:24px 0 8px}.hero h1{font-size:clamp(32px,6vw,56px);line-height:1.05;max-width:16ch}
+.hero p{max-width:52ch;color:var(--mut);margin:12px 0 0}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.chip{border:1.5px solid var(--ln);background:var(--card);padding:7px 14px;border-radius:99px;cursor:pointer;font:600 14px inherit;font-family:inherit;color:var(--ink)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:14px;overflow:hidden}
+.ph{height:170px;display:flex;align-items:flex-end;padding:12px;color:#fff;font:800 22px Fraunces,serif;text-shadow:0 1px 8px #0008}
+.bd{padding:14px 16px 16px}.bd p{margin:4px 0;color:var(--mut);font-size:14px}
+.pr{font-weight:800;font-size:18px}.pr small{font-weight:400;color:var(--mut)}
+.btn{background:var(--sea);color:#fff;border:0;border-radius:9px;padding:11px 18px;font:700 15px Manrope,sans-serif;cursor:pointer;text-decoration:none;display:inline-block}
+.btn:hover{filter:brightness(1.1)}.btn.s{background:var(--sun);color:var(--ink)}.btn.g{background:transparent;color:var(--ink);border:1.5px solid var(--ln)}.btn.w{background:#25D366}
+.btn:focus-visible,.chip:focus-visible,input:focus-visible,select:focus-visible,.d:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.two{display:grid;gap:20px;grid-template-columns:1fr}
+@media(min-width:820px){.two{grid-template-columns:1.2fr 1fr}}
+.gal{display:grid;grid-template-columns:2fr 1fr;gap:8px;margin:14px 0}.gal div{border-radius:12px;min-height:110px}
+.gal div:first-child{grid-row:span 2;min-height:230px}
+input,select{font:inherit;padding:10px;border:1.5px solid var(--ln);border-radius:9px;width:100%;margin:4px 0 12px;background:#fff}
+.cal{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:14px}
+.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.ch button{border:0;background:var(--bg);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:18px}
+.gr{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
+.gr span{font-size:12px;color:var(--mut);font-weight:700}
+.d{border:0;background:#E5F1EF;border-radius:8px;aspect-ratio:1;font:600 14px inherit;font-family:inherit;color:var(--ink);cursor:pointer}
+.d.x{background:#F1D9D5;color:var(--bad);text-decoration:line-through;cursor:not-allowed}
+.d.p{background:transparent;color:#B5B0A3;cursor:default}
+.d.s{background:var(--sea);color:#fff}.d.r{background:#BFE0DC}
+.lg{display:flex;gap:14px;font-size:12px;color:var(--mut);margin-top:10px;flex-wrap:wrap}
+.lg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--ln);border-radius:12px;overflow:hidden}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--ln);font-size:14px}th{background:#EBE3D2}
+.wrap{overflow-x:auto}
+.note{background:#FFF1C9;border:1px solid var(--sun);border-radius:10px;padding:10px 14px;font-size:14px;margin:14px 0}
+.tag{display:inline-block;font-size:12px;font-weight:700;background:#E5F1EF;color:var(--sea);padding:2px 9px;border-radius:99px;margin:0 4px 4px 0}
+.tot{display:flex;justify-content:space-between;font-weight:800;font-size:18px;margin:6px 0 14px}
+</style>
+</head>
+<body>
+<header><nav id="nav"></nav></header>
+<main id="app"></main>
+<script>
+/* ===== DATA (edit di sini) ===== */
+const WA='6281234567890';           // ganti dengan nomor WhatsApp Anda (format 62...)
+const PIN='1234';                   // PIN admin (demo)
+const NAMA='Villa Pesan Langsung';
+const V=[
+ {id:'v1',n:'Villa Cipanas Asri',w:'Puncak',h:1200000,g:12,k:4,f:['Kolam renang','Kitchen set','BBQ','Parkir 4 mobil'],c:['#2E7D6B','#A8D5BA']},
+ {id:'v2',n:'Villa Gunung Mas',w:'Puncak',h:850000,g:8,k:3,f:['View kebun teh','Kitchen set','Karaoke'],c:['#4C6B3C','#C9D8A6']},
+ {id:'v3',n:'Villa Lembang Hills',w:'Bandung',h:1500000,g:15,k:5,f:['Kolam renang','Gazebo','Playground','Wi-Fi'],c:['#3A5F7D','#B9D3E6']},
+ {id:'v4',n:'Villa Dago Pakar',w:'Bandung',h:950000,g:10,k:3,f:['City view','Kitchen set','Wi-Fi'],c:['#6B4E71','#D9C4DE']},
+ {id:'v5',n:'Villa Pantai Carita',w:'Anyer',h:1100000,g:14,k:4,f:['Dekat pantai','BBQ','Kolam renang','Parkir 3 mobil'],c:['#1B7F99','#9ADBE8']},
+ {id:'v6',n:'Villa Anyer Sunset',w:'Anyer',h:1800000,g:20,k:6,f:['Pinggir pantai','Kolam renang','Aula','Kitchen set'],c:['#C77B30','#F5D7A1']}];
+
+/* ===== STATE ===== */
+let S;try{S=JSON.parse(localStorage.getItem('vl'))}catch(e){}
+S=S||{o:[],bk:{},pr:{},adm:0};
+const save=()=>{try{localStorage.setItem('vl',JSON.stringify(S))}catch(e){}};
+const $=s=>document.querySelector(s),rp=n=>'Rp'+n.toLocaleString('id-ID');
+const pad=n=>String(n).padStart(2,'0'),iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const addD=(s,n)=>{const d=new Date(s+'T00:00:00');d.setDate(d.getDate()+n);return iso(d)};
+const today=iso(new Date()),price=v=>S.pr[v.id]||v.h;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fd=s=>new Date(s+'T00:00:00').toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
+let view='home',arg=null,reg='Semua',gst=0,sel={a:null,b:null},off=0;
+
+function go(v,a){view=v;arg=a;if(v=='villa'){sel={a:null,b:null};off=0}render();scrollTo(0,0)}
+function render(){
+ $('#nav').innerHTML=`<b onclick="go('home')">${NAMA}</b><a tabindex=0 onclick="go('home')">Villa</a><a tabindex=0 onclick="go('orders')">Pesanan saya</a><a tabindex=0 onclick="go('admin')">Admin</a>`;
+ $('#app').innerHTML=VW[view]()}
+
+/* ===== KALENDER ===== */
+function cal(id,admin){
+ const b=new Date();b.setDate(1);b.setMonth(b.getMonth()+off);const y=b.getFullYear(),m=b.getMonth(),n=new Date(y,m+1,0).getDate(),st=(b.getDay()+6)%7;
+ let h=`<div class="ch"><button onclick="off=Math.max(0,off-1);render()" aria-label="Bulan sebelumnya">‹</button><b>${b.toLocaleDateString('id-ID',{month:'long',year:'numeric'})}</b><button onclick="off=Math.min(11,off+1);render()" aria-label="Bulan berikutnya">›</button></div><div class="gr">`;
+ 'SSRKJSM'.length;['Sen','Sel','Rab','Kam','Jum','Sab','Min'].forEach(x=>h+=`<span>${x}</span>`);
+ for(let i=0;i<st;i++)h+='<span></span>';
+ for(let d=1;d<=n;d++){const s=y+'-'+pad(m+1)+'-'+pad(d),x=(S.bk[id]||{})[s];
+  let c='d';if(s<today)c+=' p';else if(x)c+=' x';else if(s==sel.a||s==sel.b)c+=' s';else if(sel.a&&sel.b&&s>sel.a&&s<sel.b)c+=' r';
+  if(admin&&x)c=c.replace(' x',' x')+'';
+  h+=`<button class="${c}" onclick="dc('${id}','${s}',${admin?1:0})">${d}</button>`}
+ return h+`</div><div class="lg"><span><i style="background:#E5F1EF"></i>Tersedia</span><span><i style="background:#F1D9D5"></i>${admin?'Terisi / ditutup':'Tidak tersedia'}</span>${admin?'':'<span><i style="background:var(--sea)"></i>Pilihanmu</span>'}</div>`}
+function dc(id,s,admin){
+ const bk=S.bk[id]=S.bk[id]||{};
+ if(admin){if(s<today)return;if(bk[s]=='booked')return alert('Tanggal ini terisi pesanan tamu. Batalkan pesanannya lebih dulu di daftar pesanan.');
+  if(bk[s])delete bk[s];else bk[s]='blocked';save();return render()}
+ if(s<today)return;
+ const asOut=sel.a&&!sel.b&&s>sel.a;
+ if(bk[s]&&!asOut)return;
+ if(!sel.a||sel.b||s<=sel.a)sel={a:s,b:null};
+ else{for(let t=sel.a;t<s;t=addD(t,1))if(bk[t])return alert('Ada tanggal tidak tersedia di antara pilihanmu. Pilih tanggal lain.')
+  sel.b=s}
+ render()}
+const nights=(a,b)=>{const r=[];for(let t=a;t<b;t=addD(t,1))r.push(t);return r};
+
+/* ===== TAMPILAN ===== */
+const VW={
+home:()=>{const L=V.filter(v=>(reg=='Semua'||v.w==reg)&&v.g>=gst);return `<section class="hero"><h1>Villa pilihan di Puncak, Bandung, dan Anyer</h1>
+<p>Cek tanggal kosong, hitung total biaya, dan pesan langsung tanpa perantara berlapis.</p></section>
+<div class="note">Ini versi uji coba. Pembayaran hanya simulasi, dan data tersimpan di browser perangkat ini.</div>
+<div class="bar">${['Semua','Puncak','Bandung','Anyer'].map(r=>`<button class="chip ${r==reg?'on':''}" onclick="reg='${r}';render()">${r}</button>`).join('')}
+<select style="width:auto;margin:0" onchange="gst=+this.value;render()" aria-label="Jumlah tamu">${[[0,'Semua kapasitas'],[10,'Min. 10 tamu'],[15,'Min. 15 tamu']].map(o=>`<option value="${o[0]}" ${o[0]==gst?'selected':''}>${o[1]}</option>`).join('')}</select></div>
+<div class="grid">${L.map(v=>`<div class="card"><div class="ph" style="background:linear-gradient(135deg,${v.c[0]},${v.c[1]})">${v.w}</div><div class="bd"><h3>${v.n}</h3>
+<p>${v.k} kamar · maks. ${v.g} tamu</p><p class="pr">${rp(price(v))} <small>/ malam</small></p><button class="btn" onclick="go('villa','${v.id}')">Lihat &amp; pesan</button></div></div>`).join('')||'<p>Tidak ada villa yang cocok. Ubah filter.</p>'}</div>`},
+
+villa:()=>{const v=V.find(x=>x.id==arg),n=sel.a&&sel.b?nights(sel.a,sel.b).length:0;
+ return `<button class="btn g" onclick="go('home')">‹ Semua villa</button>
+<h1 style="font-size:36px;margin-top:14px">${v.n}</h1><p style="color:var(--mut);margin:2px 0">${v.w} · ${v.k} kamar · maks. ${v.g} tamu</p>
+<div class="gal"><div style="background:linear-gradient(135deg,${v.c[0]},${v.c[1]})"></div><div style="background:${v.c[1]}"></div><div style="background:${v.c[0]}"></div></div>
+<p>${v.f.map(f=>`<span class="tag">${f}</span>`).join('')}</p>
+<div class="two"><div><h2 style="font-size:22px;margin-bottom:10px">Pilih tanggal</h2><div class="cal">${cal(v.id,0)}</div>
+<p style="font-size:13px;color:var(--mut)">Ketuk tanggal check-in, lalu tanggal check-out.</p></div>
+<div class="card" style="padding:16px;align-self:start"><div class="pr">${rp(price(v))} <small>/ malam</small></div>
+<p>${sel.a?fd(sel.a):'Check-in'} → ${sel.b?fd(sel.b):'Check-out'}${n?' · '+n+' malam':''}</p>
+<label>Nama<input id="fn" placeholder="Nama lengkap"></label><label>Nomor WhatsApp<input id="ft" inputmode="tel" placeholder="08xxxxxxxxxx"></label>
+<label>Jumlah tamu<input id="fg" type="number" min="1" max="${v.g}" value="2"></label>
+<div class="tot"><span>Total</span><span>${rp(n*price(v))}</span></div>
+<button class="btn s" style="width:100%" onclick="book('${v.id}')">Bayar &amp; pesan (simulasi)</button>
+<p style="text-align:center;margin:10px 0 0"><a class="btn w" style="width:100%" target="_blank" rel="noopener" href="https://wa.me/${WA}?text=${encodeURIComponent('Halo, saya tertarik '+v.n+(sel.b?' tanggal '+fd(sel.a)+' - '+fd(sel.b):'')+'. Apakah masih tersedia?')}">Tanya lewat WhatsApp</a></p></div></div>`},
+
+done:()=>{const o=arg,v=V.find(x=>x.id==o.v);return `<div class="card" style="padding:22px;max-width:520px;margin:auto"><h2>Pesanan diterima</h2>
+<p>Kode pesanan <b>${o.id}</b></p><p>${v.n}<br>${fd(o.a)} → ${fd(o.b)} (${o.n} malam) · ${o.g} tamu<br>Atas nama ${esc(o.nm)}</p>
+<div class="tot"><span>Total dibayar</span><span>${rp(o.t)}</span></div>
+<p class="note">Pembayaran ini simulasi. Tanggal sudah ditutup di kalender villa.</p>
+<button class="btn" onclick="go('orders')">Lihat pesanan saya</button></div>`},
+
+orders:()=>`<h1 style="font-size:34px;margin-bottom:14px">Pesanan saya</h1>${S.o.length?`<div class="wrap"><table><tr><th>Kode</th><th>Villa</th><th>Tanggal</th><th>Tamu</th><th>Total</th></tr>${S.o.map(o=>`<tr><td>${o.id}</td><td>${V.find(v=>v.id==o.v).n}</td><td>${fd(o.a)} → ${fd(o.b)}</td><td>${esc(o.nm)} (${o.g})</td><td>${rp(o.t)}</td></tr>`).join('')}</table></div>`:'<p>Belum ada pesanan.</p><button class="btn" onclick="go(\'home\')">Cari villa</button>'}`,
+
+admin:()=>{if(!S.adm)return `<div class="card" style="padding:20px;max-width:380px;margin:auto"><h2>Masuk admin</h2><label>PIN<input id="pn" type="password" inputmode="numeric"></label>
+<button class="btn" onclick="if($('#pn').value==PIN){S.adm=1;save();render()}else alert('PIN salah.')">Masuk</button><p class="note">PIN demo: 1234. Versi produksi memakai login sungguhan.</p></div>`;
+ const a=arg||V[0].id,v=V.find(x=>x.id==a),rev=S.o.reduce((s,o)=>s+o.t,0);
+ return `<h1 style="font-size:34px">Panel admin</h1>
+<div class="grid" style="margin:14px 0"><div class="card bd"><p>Pesanan</p><h3>${S.o.length}</h3></div><div class="card bd"><p>Pendapatan (simulasi)</p><h3>${rp(rev)}</h3></div></div>
+<h2 style="font-size:22px;margin:18px 0 8px">Atur ketersediaan</h2>
+<select onchange="arg=this.value;off=0;render()">${V.map(x=>`<option value="${x.id}" ${x.id==a?'selected':''}>${x.n}</option>`).join('')}</select>
+<div class="two"><div><div class="cal">${cal(a,1)}</div><p style="font-size:13px;color:var(--mut)">Ketuk tanggal untuk menutup atau membuka. Tanggal terisi pesanan hanya bisa dibuka dengan membatalkan pesanan.</p></div>
+<div class="card bd" style="align-self:start"><b>Harga per malam</b><input id="hp" type="number" value="${price(v)}" step="50000"><button class="btn" onclick="S.pr['${a}']=+$('#hp').value;save();alert('Harga disimpan.');render()">Simpan harga</button></div></div>
+<h2 style="font-size:22px;margin:22px 0 8px">Daftar pesanan</h2>${S.o.length?`<div class="wrap"><table><tr><th>Kode</th><th>Villa</th><th>Tanggal</th><th>Tamu</th><th>Total</th><th></th></tr>${S.o.map(o=>`<tr><td>${o.id}</td><td>${V.find(x=>x.id==o.v).n}</td><td>${fd(o.a)} → ${fd(o.b)}</td><td>${esc(o.nm)}<br>${esc(o.tl)}</td><td>${rp(o.t)}</td><td><button class="btn g" onclick="cancel('${o.id}')">Batalkan</button></td></tr>`).join('')}</table></div>`:'<p>Belum ada pesanan.</p>'}
+<p style="margin-top:18px"><button class="btn g" onclick="S.adm=0;save();render()">Keluar</button> <button class="btn g" onclick="if(confirm('Hapus semua data uji coba?')){localStorage.removeItem('vl');location.reload()}">Reset data</button></p>`}
+};
+
+/* ===== AKSI ===== */
+function book(id){const v=V.find(x=>x.id==id),nm=$('#fn').value.trim(),tl=$('#ft').value.trim(),g=+$('#fg').value;
+ if(!sel.a||!sel.b)return alert('Pilih tanggal check-in dan check-out dulu.');
+ if(!nm||tl.replace(/\D/g,'').length<9)return alert('Isi nama dan nomor WhatsApp yang benar.');
+ if(g<1||g>v.g)return alert('Jumlah tamu maksimal '+v.g+' orang.');
+ const ns=nights(sel.a,sel.b),bk=S.bk[id]=S.bk[id]||{};
+ if(ns.some(t=>bk[t]))return alert('Tanggal baru saja terisi. Pilih tanggal lain.');
+ ns.forEach(t=>bk[t]='booked');
+ const o={id:'VL'+String(Date.now()).slice(-6),v:id,a:sel.a,b:sel.b,n:ns.length,g,nm,tl,t:ns.length*price(v)};
+ S.o.push(o);save();go('done',o)}
+function cancel(code){if(!confirm('Batalkan pesanan '+code+'?'))return;const o=S.o.find(x=>x.id==code);
+ nights(o.a,o.b).forEach(t=>{delete (S.bk[o.v]||{})[t]});S.o=S.o.filter(x=>x.id!=code);save();render()}
+render();
+</script>
+</body>
+</html>
