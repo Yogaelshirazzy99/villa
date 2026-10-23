@@ -51,6 +51,10 @@ th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--ln);font-s
 .note{background:#FFF1C9;border:1px solid var(--sun);border-radius:10px;padding:10px 14px;font-size:14px;margin:14px 0}
 .tag{display:inline-block;font-size:12px;font-weight:700;background:#E5F1EF;color:var(--sea);padding:2px 9px;border-radius:99px;margin:0 4px 4px 0}
 .tot{display:flex;justify-content:space-between;font-weight:800;font-size:18px;margin:6px 0 14px}
+.ph,.gal div{background-size:cover;background-position:center}
+.bank{background:#E5F1EF;border:1.5px solid var(--sea);border-radius:12px;padding:14px 16px;margin:12px 0}.bank p{margin:2px 0;color:var(--mut);font-size:14px}
+.amt{font:800 24px Fraunces,serif;margin:2px 0}.amt .btn{font-size:13px;padding:6px 12px;vertical-align:middle;margin-left:6px}
+.st{font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;background:#FFF1C9;color:#8A5A00;white-space:nowrap}.st.l{background:#DDF3E9;color:#1E7A52}
 </style>
 </head>
 <body>
@@ -61,6 +65,8 @@ th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--ln);font-s
 const WA='6281234567890';           // ganti dengan nomor WhatsApp Anda (format 62...)
 const PIN='1234';                   // PIN admin (demo)
 const NAMA='Villa Pesan Langsung';
+const BANK={bank:'BCA',no:'7391840800',an:'ISI NAMA PEMILIK REKENING'}; // ganti 'an' dengan nama di buku rekening
+const HOLD=3;                       // jam batas bayar sebelum tanggal dilepas lagi
 const V=[
  {id:'v1',n:'Villa Cipanas Asri',w:'Puncak',h:1200000,g:12,k:4,f:['Kolam renang','Kitchen set','BBQ','Parkir 4 mobil'],c:['#2E7D6B','#A8D5BA']},
  {id:'v2',n:'Villa Gunung Mas',w:'Puncak',h:850000,g:8,k:3,f:['View kebun teh','Kitchen set','Karaoke'],c:['#4C6B3C','#C9D8A6']},
@@ -79,6 +85,12 @@ const addD=(s,n)=>{const d=new Date(s+'T00:00:00');d.setDate(d.getDate()+n);retu
 const today=iso(new Date()),price=v=>S.pr[v.id]||v.h;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fd=s=>new Date(s+'T00:00:00').toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
+function art(v,i){const a=v.c[0],b=v.c[1],hx=[200,330,90][i%3],
+ sc={Puncak:'<path d="M0 210L110 95L210 175L320 70L440 190L600 110V300H0Z" fill="#fff" opacity=".35"/>',Bandung:'<path d="M0 215Q150 120 300 205T600 190V300H0Z" fill="#fff" opacity=".35"/>',Anyer:'<rect y="205" width="600" height="95" fill="#fff" opacity=".45"/><path d="M0 215Q75 200 150 215T300 215T450 215T600 215" stroke="#fff" fill="none" stroke-width="4"/>'}[v.w],
+ x='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+b+'"/><stop offset="1" stop-color="'+a+'"/></linearGradient></defs><rect width="600" height="300" fill="url(#g)"/><circle cx="'+(480-i*60)+'" cy="60" r="28" fill="#FFE9A8"/>'+sc+'<rect y="250" width="600" height="50" fill="'+a+'" opacity=".6"/><g transform="translate('+hx+' 150)"><rect y="40" width="170" height="80" fill="#FFFDF8"/><path d="M-12 42L85-8L182 42Z" fill="#12302E"/><rect x="18" y="62" width="30" height="58" fill="'+a+'"/><rect x="70" y="62" width="34" height="26" fill="'+b+'"/><rect x="120" y="62" width="34" height="26" fill="'+b+'"/></g><ellipse cx="'+(i%2?110:470)+'" cy="268" rx="70" ry="14" fill="#7FD0DB"/></svg>';
+ return 'data:image/svg+xml,'+encodeURIComponent(x)}
+/* foto asli: unggah ke folder foto/ dengan nama id-villa + nomor, mis. foto/v1-1.jpg, v1-2.jpg, v1-3.jpg. Jika belum ada, tampil ilustrasi. */
+const pic=(v,i)=>`url('foto/${v.id}-${i}.jpg') center/cover,url('${art(v,i)}') center/cover`;
 let view='home',arg=null,reg='Semua',gst=0,sel={a:null,b:null},off=0;
 
 function go(v,a){view=v;arg=a;if(v=='villa'){sel={a:null,b:null};off=0}render();scrollTo(0,0)}
@@ -114,16 +126,16 @@ const nights=(a,b)=>{const r=[];for(let t=a;t<b;t=addD(t,1))r.push(t);return r};
 const VW={
 home:()=>{const L=V.filter(v=>(reg=='Semua'||v.w==reg)&&v.g>=gst);return `<section class="hero"><h1>Villa pilihan di Puncak, Bandung, dan Anyer</h1>
 <p>Cek tanggal kosong, hitung total biaya, dan pesan langsung tanpa perantara berlapis.</p></section>
-<div class="note">Ini versi uji coba. Pembayaran hanya simulasi, dan data tersimpan di browser perangkat ini.</div>
+<div class="note">Versi uji coba: data tersimpan di browser perangkat ini. Setelah memesan, tamu transfer ke rekening BCA lalu kirim bukti lewat WhatsApp.</div>
 <div class="bar">${['Semua','Puncak','Bandung','Anyer'].map(r=>`<button class="chip ${r==reg?'on':''}" onclick="reg='${r}';render()">${r}</button>`).join('')}
 <select style="width:auto;margin:0" onchange="gst=+this.value;render()" aria-label="Jumlah tamu">${[[0,'Semua kapasitas'],[10,'Min. 10 tamu'],[15,'Min. 15 tamu']].map(o=>`<option value="${o[0]}" ${o[0]==gst?'selected':''}>${o[1]}</option>`).join('')}</select></div>
-<div class="grid">${L.map(v=>`<div class="card"><div class="ph" style="background:linear-gradient(135deg,${v.c[0]},${v.c[1]})">${v.w}</div><div class="bd"><h3>${v.n}</h3>
+<div class="grid">${L.map(v=>`<div class="card"><div class="ph" style="background:${pic(v,1)}">${v.w}</div><div class="bd"><h3>${v.n}</h3>
 <p>${v.k} kamar · maks. ${v.g} tamu</p><p class="pr">${rp(price(v))} <small>/ malam</small></p><button class="btn" onclick="go('villa','${v.id}')">Lihat &amp; pesan</button></div></div>`).join('')||'<p>Tidak ada villa yang cocok. Ubah filter.</p>'}</div>`},
 
 villa:()=>{const v=V.find(x=>x.id==arg),n=sel.a&&sel.b?nights(sel.a,sel.b).length:0;
  return `<button class="btn g" onclick="go('home')">‹ Semua villa</button>
 <h1 style="font-size:36px;margin-top:14px">${v.n}</h1><p style="color:var(--mut);margin:2px 0">${v.w} · ${v.k} kamar · maks. ${v.g} tamu</p>
-<div class="gal"><div style="background:linear-gradient(135deg,${v.c[0]},${v.c[1]})"></div><div style="background:${v.c[1]}"></div><div style="background:${v.c[0]}"></div></div>
+<div class="gal"><div style="background:${pic(v,1)}"></div><div style="background:${pic(v,2)}"></div><div style="background:${pic(v,3)}"></div></div>
 <p>${v.f.map(f=>`<span class="tag">${f}</span>`).join('')}</p>
 <div class="two"><div><h2 style="font-size:22px;margin-bottom:10px">Pilih tanggal</h2><div class="cal">${cal(v.id,0)}</div>
 <p style="font-size:13px;color:var(--mut)">Ketuk tanggal check-in, lalu tanggal check-out.</p></div>
@@ -132,27 +144,30 @@ villa:()=>{const v=V.find(x=>x.id==arg),n=sel.a&&sel.b?nights(sel.a,sel.b).lengt
 <label>Nama<input id="fn" placeholder="Nama lengkap"></label><label>Nomor WhatsApp<input id="ft" inputmode="tel" placeholder="08xxxxxxxxxx"></label>
 <label>Jumlah tamu<input id="fg" type="number" min="1" max="${v.g}" value="2"></label>
 <div class="tot"><span>Total</span><span>${rp(n*price(v))}</span></div>
-<button class="btn s" style="width:100%" onclick="book('${v.id}')">Bayar &amp; pesan (simulasi)</button>
+<button class="btn s" style="width:100%" onclick="book('${v.id}')">Pesan &amp; lanjut bayar</button>
 <p style="text-align:center;margin:10px 0 0"><a class="btn w" style="width:100%" target="_blank" rel="noopener" href="https://wa.me/${WA}?text=${encodeURIComponent('Halo, saya tertarik '+v.n+(sel.b?' tanggal '+fd(sel.a)+' - '+fd(sel.b):'')+'. Apakah masih tersedia?')}">Tanya lewat WhatsApp</a></p></div></div>`},
 
-done:()=>{const o=arg,v=V.find(x=>x.id==o.v);return `<div class="card" style="padding:22px;max-width:520px;margin:auto"><h2>Pesanan diterima</h2>
-<p>Kode pesanan <b>${o.id}</b></p><p>${v.n}<br>${fd(o.a)} → ${fd(o.b)} (${o.n} malam) · ${o.g} tamu<br>Atas nama ${esc(o.nm)}</p>
-<div class="tot"><span>Total dibayar</span><span>${rp(o.t)}</span></div>
-<p class="note">Pembayaran ini simulasi. Tanggal sudah ditutup di kalender villa.</p>
-<button class="btn" onclick="go('orders')">Lihat pesanan saya</button></div>`},
+done:()=>{const o=arg,v=V.find(x=>x.id==o.v),j=new Date(o.x).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+ return `<div class="card" style="padding:22px;max-width:540px;margin:auto"><h2>${o.s=='lunas'?'Pembayaran lunas':'Selesaikan pembayaran'}</h2>
+<p>Kode pesanan <b>${o.id}</b> · ${v.n}<br>${fd(o.a)} → ${fd(o.b)} (${o.n} malam) · ${o.g} tamu</p>
+${o.s=='lunas'?'<p class="note">Pembayaran sudah dikonfirmasi. Sampai jumpa di villa.</p>':`<div class="bank"><p>Transfer tepat sejumlah</p><div class="amt">${rp(o.t)}</div>
+<p>ke rekening ${BANK.bank}</p><div class="amt">${BANK.no}<button class="btn g" onclick="navigator.clipboard&&navigator.clipboard.writeText('${BANK.no}');this.textContent='Tersalin'">Salin</button></div><p>a.n. ${BANK.an}</p></div>
+<p class="note">${rp(o.u)} pada total adalah kode unik supaya transfer mudah dicocokkan. Tanggal ditahan sampai pukul ${j}. Setelah transfer, kirim bukti lewat WhatsApp.</p>
+<a class="btn w" style="width:100%;text-align:center" target="_blank" rel="noopener" href="https://wa.me/${WA}?text=${encodeURIComponent('Halo, saya sudah transfer untuk pesanan '+o.id+' ('+v.n+', '+fd(o.a)+' - '+fd(o.b)+') sebesar '+rp(o.t)+' a.n. '+o.nm+'. Bukti transfer terlampir.')}">Kirim bukti transfer</a>`}
+<p style="margin-top:12px"><button class="btn g" onclick="go('orders')">Pesanan saya</button></p></div>`},
 
-orders:()=>`<h1 style="font-size:34px;margin-bottom:14px">Pesanan saya</h1>${S.o.length?`<div class="wrap"><table><tr><th>Kode</th><th>Villa</th><th>Tanggal</th><th>Tamu</th><th>Total</th></tr>${S.o.map(o=>`<tr><td>${o.id}</td><td>${V.find(v=>v.id==o.v).n}</td><td>${fd(o.a)} → ${fd(o.b)}</td><td>${esc(o.nm)} (${o.g})</td><td>${rp(o.t)}</td></tr>`).join('')}</table></div>`:'<p>Belum ada pesanan.</p><button class="btn" onclick="go(\'home\')">Cari villa</button>'}`,
+orders:()=>`<h1 style="font-size:34px;margin-bottom:14px">Pesanan saya</h1>${S.o.length?`<div class="wrap"><table><tr><th>Kode</th><th>Villa</th><th>Tanggal</th><th>Tamu</th><th>Total</th><th>Status</th></tr>${S.o.map(o=>`<tr><td>${o.id}</td><td>${V.find(v=>v.id==o.v).n}</td><td>${fd(o.a)} → ${fd(o.b)}</td><td>${esc(o.nm)} (${o.g})</td><td>${rp(o.t)}</td><td>${o.s=='menunggu'?`<span class="st">Menunggu bayar</span><br><button class="btn g" style="padding:4px 10px;margin-top:4px" onclick="go('done',S.o.find(x=>x.id=='${o.id}'))">Cara bayar</button>`:'<span class="st l">Lunas</span>'}</td></tr>`).join('')}</table></div>`:'<p>Belum ada pesanan.</p><button class="btn" onclick="go(\'home\')">Cari villa</button>'}`,
 
 admin:()=>{if(!S.adm)return `<div class="card" style="padding:20px;max-width:380px;margin:auto"><h2>Masuk admin</h2><label>PIN<input id="pn" type="password" inputmode="numeric"></label>
 <button class="btn" onclick="if($('#pn').value==PIN){S.adm=1;save();render()}else alert('PIN salah.')">Masuk</button><p class="note">PIN demo: 1234. Versi produksi memakai login sungguhan.</p></div>`;
- const a=arg||V[0].id,v=V.find(x=>x.id==a),rev=S.o.reduce((s,o)=>s+o.t,0);
+ const a=arg||V[0].id,v=V.find(x=>x.id==a),rev=S.o.filter(o=>o.s!='menunggu').reduce((s,o)=>s+o.t,0);
  return `<h1 style="font-size:34px">Panel admin</h1>
-<div class="grid" style="margin:14px 0"><div class="card bd"><p>Pesanan</p><h3>${S.o.length}</h3></div><div class="card bd"><p>Pendapatan (simulasi)</p><h3>${rp(rev)}</h3></div></div>
+<div class="grid" style="margin:14px 0"><div class="card bd"><p>Pesanan</p><h3>${S.o.length}</h3></div><div class="card bd"><p>Pendapatan (lunas)</p><h3>${rp(rev)}</h3></div></div>
 <h2 style="font-size:22px;margin:18px 0 8px">Atur ketersediaan</h2>
 <select onchange="arg=this.value;off=0;render()">${V.map(x=>`<option value="${x.id}" ${x.id==a?'selected':''}>${x.n}</option>`).join('')}</select>
 <div class="two"><div><div class="cal">${cal(a,1)}</div><p style="font-size:13px;color:var(--mut)">Ketuk tanggal untuk menutup atau membuka. Tanggal terisi pesanan hanya bisa dibuka dengan membatalkan pesanan.</p></div>
 <div class="card bd" style="align-self:start"><b>Harga per malam</b><input id="hp" type="number" value="${price(v)}" step="50000"><button class="btn" onclick="S.pr['${a}']=+$('#hp').value;save();alert('Harga disimpan.');render()">Simpan harga</button></div></div>
-<h2 style="font-size:22px;margin:22px 0 8px">Daftar pesanan</h2>${S.o.length?`<div class="wrap"><table><tr><th>Kode</th><th>Villa</th><th>Tanggal</th><th>Tamu</th><th>Total</th><th></th></tr>${S.o.map(o=>`<tr><td>${o.id}</td><td>${V.find(x=>x.id==o.v).n}</td><td>${fd(o.a)} → ${fd(o.b)}</td><td>${esc(o.nm)}<br>${esc(o.tl)}</td><td>${rp(o.t)}</td><td><button class="btn g" onclick="cancel('${o.id}')">Batalkan</button></td></tr>`).join('')}</table></div>`:'<p>Belum ada pesanan.</p>'}
+<h2 style="font-size:22px;margin:22px 0 8px">Daftar pesanan</h2>${S.o.length?`<div class="wrap"><table><tr><th>Kode</th><th>Villa</th><th>Tanggal</th><th>Tamu</th><th>Total</th><th>Status</th><th></th></tr>${S.o.map(o=>`<tr><td>${o.id}</td><td>${V.find(x=>x.id==o.v).n}</td><td>${fd(o.a)} → ${fd(o.b)}</td><td>${esc(o.nm)}<br>${esc(o.tl)}</td><td>${rp(o.t)}</td><td>${o.s=='menunggu'?'<span class="st">Menunggu</span>':'<span class="st l">Lunas</span>'}</td><td>${o.s=='menunggu'?`<button class="btn" style="padding:6px 12px" onclick="lunas('${o.id}')">Konfirmasi lunas</button> `:''}<button class="btn g" style="padding:6px 12px" onclick="cancel('${o.id}')">Batalkan</button></td></tr>`).join('')}</table></div>`:'<p>Belum ada pesanan.</p>'}
 <p style="margin-top:18px"><button class="btn g" onclick="S.adm=0;save();render()">Keluar</button> <button class="btn g" onclick="if(confirm('Hapus semua data uji coba?')){localStorage.removeItem('vl');location.reload()}">Reset data</button></p>`}
 };
 
@@ -164,11 +179,13 @@ function book(id){const v=V.find(x=>x.id==id),nm=$('#fn').value.trim(),tl=$('#ft
  const ns=nights(sel.a,sel.b),bk=S.bk[id]=S.bk[id]||{};
  if(ns.some(t=>bk[t]))return alert('Tanggal baru saja terisi. Pilih tanggal lain.');
  ns.forEach(t=>bk[t]='booked');
- const o={id:'VL'+String(Date.now()).slice(-6),v:id,a:sel.a,b:sel.b,n:ns.length,g,nm,tl,t:ns.length*price(v)};
+ const u=100+Math.floor(Math.random()*900),o={id:'VL'+String(Date.now()).slice(-6),v:id,a:sel.a,b:sel.b,n:ns.length,g,nm,tl,u,t:ns.length*price(v)+u,s:'menunggu',x:Date.now()+HOLD*3600000};
  S.o.push(o);save();go('done',o)}
 function cancel(code){if(!confirm('Batalkan pesanan '+code+'?'))return;const o=S.o.find(x=>x.id==code);
  nights(o.a,o.b).forEach(t=>{delete (S.bk[o.v]||{})[t]});S.o=S.o.filter(x=>x.id!=code);save();render()}
-render();
+function lunas(code){S.o.find(o=>o.id==code).s='lunas';save();render()}
+function sweep(){const now=Date.now(),ex=S.o.filter(o=>o.s=='menunggu'&&o.x<now);ex.forEach(o=>nights(o.a,o.b).forEach(t=>{delete (S.bk[o.v]||{})[t]}));if(ex.length){S.o=S.o.filter(o=>!ex.includes(o));save()}}
+sweep();render();
 </script>
 </body>
 </html>
