@@ -126,7 +126,7 @@ const nights=(a,b)=>{const r=[];for(let t=a;t<b;t=addD(t,1))r.push(t);return r};
 const VW={
 home:()=>{const L=V.filter(v=>(reg=='Semua'||v.w==reg)&&v.g>=gst);return `<section class="hero"><h1>Villa pilihan di Puncak, Bandung, dan Anyer</h1>
 <p>Cek tanggal kosong, hitung total biaya, dan pesan langsung tanpa perantara berlapis.</p></section>
-<div class="note">Versi uji coba: data tersimpan di browser perangkat ini. Setelah memesan, tamu transfer ke rekening BCA lalu kirim bukti lewat WhatsApp.</div>
+<div class="note">Setelah memesan, tamu transfer ke rekening BCA lalu kirim bukti lewat WhatsApp.</div>
 <div class="bar">${['Semua','Puncak','Bandung','Anyer'].map(r=>`<button class="chip ${r==reg?'on':''}" onclick="reg='${r}';render()">${r}</button>`).join('')}
 <select style="width:auto;margin:0" onchange="gst=+this.value;render()" aria-label="Jumlah tamu">${[[0,'Semua kapasitas'],[10,'Min. 10 tamu'],[15,'Min. 15 tamu']].map(o=>`<option value="${o[0]}" ${o[0]==gst?'selected':''}>${o[1]}</option>`).join('')}</select></div>
 <div class="grid">${L.map(v=>`<div class="card"><div class="ph" style="background:${pic(v,1)}">${v.w}</div><div class="bd"><h3>${v.n}</h3>
@@ -159,7 +159,7 @@ ${o.s=='lunas'?'<p class="note">Pembayaran sudah dikonfirmasi. Sampai jumpa di v
 orders:()=>`<h1 style="font-size:34px;margin-bottom:14px">Pesanan saya</h1>${S.o.length?`<div class="wrap"><table><tr><th>Kode</th><th>Villa</th><th>Tanggal</th><th>Tamu</th><th>Total</th><th>Status</th></tr>${S.o.map(o=>`<tr><td>${o.id}</td><td>${V.find(v=>v.id==o.v).n}</td><td>${fd(o.a)} → ${fd(o.b)}</td><td>${esc(o.nm)} (${o.g})</td><td>${rp(o.t)}</td><td>${o.s=='menunggu'?`<span class="st">Menunggu bayar</span><br><button class="btn g" style="padding:4px 10px;margin-top:4px" onclick="go('done',S.o.find(x=>x.id=='${o.id}'))">Cara bayar</button>`:'<span class="st l">Lunas</span>'}</td></tr>`).join('')}</table></div>`:'<p>Belum ada pesanan.</p><button class="btn" onclick="go(\'home\')">Cari villa</button>'}`,
 
 admin:()=>{if(!S.adm)return `<div class="card" style="padding:20px;max-width:380px;margin:auto"><h2>Masuk admin</h2><label>PIN<input id="pn" type="password" inputmode="numeric"></label>
-<button class="btn" onclick="if($('#pn').value==PIN){S.adm=1;save();render()}else alert('PIN salah.')">Masuk</button><p class="note">PIN demo: 1234. Versi produksi memakai login sungguhan.</p></div>`;
+<button class="btn" onclick="if($('#pn').value==PIN){S.adm=1;save();render()}else alert('PIN salah.')">Masuk</button>`;
  const a=arg||V[0].id,v=V.find(x=>x.id==a),rev=S.o.filter(o=>o.s!='menunggu').reduce((s,o)=>s+o.t,0);
  return `<h1 style="font-size:34px">Panel admin</h1>
 <div class="grid" style="margin:14px 0"><div class="card bd"><p>Pesanan</p><h3>${S.o.length}</h3></div><div class="card bd"><p>Pendapatan (lunas)</p><h3>${rp(rev)}</h3></div></div>
